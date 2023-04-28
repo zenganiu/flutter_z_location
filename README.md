@@ -47,7 +47,7 @@ dependencies:
 目前五个文件夹必须在同一级目录，如果您的资源目录结构不一致，对应设置`pathHead`参数即可
 * 详细使用请参考项目`example`用例，下面只列出常用方法
 ```dart
-import 'package:flutter_gps/flutter_gps.dart';
+import 'package:flutter_z_location/flutter_z_location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // 获取GPS定位经纬度
