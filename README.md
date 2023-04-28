@@ -1,4 +1,4 @@
-# flutter_gps
+# flutter_z_location
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/zenganiu/flutter_z_location)
 ## **Flutter开源免费定位插件**
 * 现如今几乎每一个 App 都存在定位的逻辑，方便更好的推荐产品或服务，获取当前设备的经纬度、所在城市几乎是必备的功能了！iOS定位经纬度及反向地理编码原生均能很好实现。然而Android由于系统原因，反向地理编码获取地址信息需要使用谷歌服务。大多需要依赖高德/百度三方定位库实现该功能。
