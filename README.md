@@ -16,8 +16,7 @@
 ```yaml
 dependencies:
   # 最新版本
-  flutter_z_location:
-    git: https://github.com/zenganiu/flutter_z_location.git
+  flutter_z_location: ^0.0.7
 ```
 
 ## Android端配置
