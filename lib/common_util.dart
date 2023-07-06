@@ -36,10 +36,10 @@ class CommonUtil {
 
   /// 获取asset中的json数据
   static Future<dynamic> getAssetJson(String path) async {
-    final obj = await rootBundle.load(path);
-    final data = obj.buffer.asUint8List();
-    final jsStr = utf8.decode(data);
-    final js = jsonDecode(jsStr);
-    return js;
+    final data = await rootBundle.loadString(
+      'packages/flutter_z_location/$path',
+    );
+
+    return jsonDecode(data);
   }
 }

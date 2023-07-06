@@ -4,15 +4,12 @@ import 'common_util.dart';
 import 'geocode_entity.dart';
 import 'parse_result.dart';
 
-String _pathHead = 'assets/';
-
 class GeocodeUtil {
   ///
   GeocodeUtil._();
 
   /// 经纬度地理编码
-  static Future<GeocodeEntity> geocodeGPS(double lat, double lon, {String pathHead = 'assets/'}) async {
-    _pathHead = pathHead;
+  static Future<GeocodeEntity> geocodeGPS(double lat, double lon) async {
     var data = GeocodeEntity(
       province: '',
       city: '',
@@ -43,7 +40,7 @@ class GeocodeUtil {
     if (id.isEmpty) {
       return const ParseResult(name: '', id: '');
     }
-    final jsList = await CommonUtil.getAssetJsonList('${_pathHead}district/$id.json');
+    final jsList = await CommonUtil.getAssetJsonList('assets/district/$id.json');
     if (jsList.isEmpty) {
       return const ParseResult(name: '', id: '');
     }
@@ -65,7 +62,7 @@ class GeocodeUtil {
     if (id.isEmpty) {
       return const ParseResult(name: '', id: '');
     }
-    final jsList = await CommonUtil.getAssetJsonList('${_pathHead}city/$id.json');
+    final jsList = await CommonUtil.getAssetJsonList('assets/city/$id.json');
     if (jsList.isEmpty) {
       return const ParseResult(name: '', id: '');
     }
@@ -84,7 +81,7 @@ class GeocodeUtil {
 
   /// 获取省
   static Future<ParseResult> _getProvince(double lat, double lon) async {
-    final jsList = await CommonUtil.getAssetJsonList('${_pathHead}province/short.json');
+    final jsList = await CommonUtil.getAssetJsonList('assets/province/short.json');
     List<String> ids = [];
     for (final item in jsList) {
       if (item is Map) {
@@ -99,13 +96,13 @@ class GeocodeUtil {
       return const ParseResult(name: '', id: '');
     }
     if (ids.length == 1) {
-      final pMap = await CommonUtil.getAssetJsonMap('${_pathHead}province/${ids[0]}.json');
+      final pMap = await CommonUtil.getAssetJsonMap('assets/province/${ids[0]}.json');
       final name = pMap['name'] != null ? pMap['name'].toString() : '';
       return ParseResult(name: name, id: ids[0]);
     }
 
     for (final id in ids) {
-      final iMap = await CommonUtil.getAssetJsonMap('${_pathHead}province/$id.json');
+      final iMap = await CommonUtil.getAssetJsonMap('assets/province/$id.json');
       final status = containsLocation(LatLng(lat, lon), iMap['polygon']);
       if (status) {
         final name = iMap['name'] != null ? iMap['name'].toString() : '';

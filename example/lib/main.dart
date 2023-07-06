@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_z_location/flutter_z_location.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,7 +34,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     String platformVersion;
     try {
-      platformVersion = await FlutterZLocation.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await FlutterZLocation.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -81,10 +82,11 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () async {
                   // 获取ip地址
                   final ipStr = await FlutterZLocation.getIp();
+                  if (ipStr == null) return;
+
                   // ip反编码出地址
                   final res = await FlutterZLocation.geocodeIp(
                     ipStr,
-                    pathHead: 'assets/',
                     hasGetCoordinate: true,
                   );
                   debugPrint(ipStr);
