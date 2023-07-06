@@ -33,14 +33,10 @@ class FlutterZLocation {
   }
 
   /// 获取ip地址
-  static Future<String> getIp() async {
+  static Future<String?> getIp() async {
     try {
-      HttpClient client = HttpClient();
-      final uri = Uri.tryParse('https://api.ipify.org?format=json');
-      if (uri == null) {
-        return '';
-      }
-      final request = await client.getUrl(uri);
+      final uri = Uri.tryParse('https://api.ipify.org?format=json')!;
+      final request = await HttpClient().getUrl(uri);
       final response = await request.close();
       if (response.statusCode == 200) {
         final responseBody = await response.transform(utf8.decoder).join();
@@ -49,30 +45,29 @@ class FlutterZLocation {
           return js['ip'] as String;
         }
       }
-      return '';
+
+      return null;
     } catch (e) {
       debugPrint("FlutterGps-getIp: $e");
-      return '';
+      return null;
     }
   }
 
   /// 经纬度地理反编码
-  static Future<GeocodeEntity> geocodeCoordinate(double lat, double lon, {String pathHead = 'assets/'}) async {
-    final res = await GeocodeUtil.geocodeGPS(lat, lon, pathHead: pathHead);
+  static Future<GeocodeEntity> geocodeCoordinate(double lat, double lon) async {
+    final res = await GeocodeUtil.geocodeGPS(lat, lon);
     return res;
   }
 
   /// 获取ip所在地理信息
   ///
   /// [ip] ip地址
-  /// [pathHead] 资源头目录
   /// [hasGetCoordinate] 是否获取经纬度
   static Future<GeocodeEntity> geocodeIp(
     String ip, {
-    String pathHead = 'assets/',
     bool hasGetCoordinate = false,
   }) async {
-    final res = await IpUtil.geocodeIp(ip, pathHead: pathHead, hasGetCoordinate: hasGetCoordinate);
+    final res = await IpUtil.geocodeIp(ip, hasGetCoordinate: hasGetCoordinate);
     return res;
   }
 

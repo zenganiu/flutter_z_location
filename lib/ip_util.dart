@@ -3,23 +3,19 @@ import 'dart:async';
 import 'common_util.dart';
 import 'geocode_entity.dart';
 
-String _pathHead = 'assets/';
-
 class IpUtil {
   IpUtil._();
 
   /// 获取ip所在地理信息
   ///
   /// [ip] ip地址
-  /// [pathHead] 资源头目录
   /// [hasGetCoordinate] 是否获取经纬度
   static Future<GeocodeEntity> geocodeIp(
     String ip, {
-    String pathHead = 'assets/',
     bool hasGetCoordinate = false,
   }) async {
     try {
-      final id = await _getGeocodeByIp(ip, pathHead: pathHead);
+      final id = await _getGeocodeByIp(ip);
       var data = await _getGeocode(id);
       if (hasGetCoordinate) {
         data = await _getCoordinate(data);
@@ -34,7 +30,7 @@ class IpUtil {
     var data = GeocodeEntity.empty();
     if (id.isNotEmpty) {
       final jsList =
-          await CommonUtil.getAssetJsonList('${_pathHead}areaList/index.json');
+          await CommonUtil.getAssetJsonList('assets/areaList/index.json');
       for (final provinceJs in jsList) {
         if (provinceJs is Map) {
           // 省
@@ -106,7 +102,7 @@ class IpUtil {
     }
     // 省
     final provinceJs = await CommonUtil.getAssetJsonMap(
-        '${_pathHead}province/${data.provinceId}.json');
+        'assets/province/${data.provinceId}.json');
     if (provinceJs['location'] is Map &&
         provinceJs['location']['latitude'] is num &&
         provinceJs['location']['longitude'] is num) {
@@ -118,7 +114,7 @@ class IpUtil {
 
     // 市
     final cityJsList = await CommonUtil.getAssetJsonList(
-        '${_pathHead}city/${data.provinceId}.json');
+        'assets/city/${data.provinceId}.json');
     if (cityJsList.isEmpty) {
       return data;
     }
@@ -142,7 +138,7 @@ class IpUtil {
       return data;
     }
     final districtJsList = await CommonUtil.getAssetJsonList(
-        '${_pathHead}district/${data.cityId}.json');
+        'assets/district/${data.cityId}.json');
     if (districtJsList.isEmpty) {
       return data;
     }
@@ -164,14 +160,13 @@ class IpUtil {
   }
 
   /// 获取ip对应的地理编码
-  static Future<String> _getGeocodeByIp(String ip,
-      {String pathHead = 'assets/'}) async {
+  static Future<String> _getGeocodeByIp(String ip) async {
     final ipSlices = _getIpSlices(ip);
     if (ipSlices.isEmpty) {
       return '';
     }
     final jsList = await CommonUtil.getAssetJsonList(
-        '${_pathHead}ip/${ipSlices[0]}.${ipSlices[1]}.json');
+        'assets/ip/${ipSlices[0]}.${ipSlices[1]}.json');
     if (jsList.isEmpty) {
       return '';
     }
