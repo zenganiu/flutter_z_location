@@ -17,17 +17,23 @@ public class FlutterZLocationPlugin: NSObject, FlutterPlugin {
             result("iOS " + UIDevice.current.systemVersion)
         case "getCoordinate":
             locationResult = result
-            loaction()
+            loaction(call: call)
         default:
             result("notfond method")
             break
         }
     }
 
-    private func loaction() {
-        var lm = CLLocationManager()
+    private func loaction(call: FlutterMethodCall) {
+        let lm = CLLocationManager()
         lm.delegate = self
-        lm.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        let accuracy = call.getInt(key: "accuracy") ?? 2
+        if(accuracy == 1){
+            lm.desiredAccuracy = kCLLocationAccuracyBest
+        }else{
+            lm.desiredAccuracy = kCLLocationAccuracyKilometer
+        }
+        
         lm.requestWhenInUseAuthorization()
         lm.startUpdatingLocation()
         sysLocationManger = lm
@@ -66,4 +72,55 @@ fileprivate extension Double {
 
     }
 
+}
+
+internal extension FlutterMethodCall {
+    func getValue<T>(key: String) -> T? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? T else {
+            return nil
+        }
+        return result
+    }
+
+    func getNumber(key: String) -> NSNumber? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? NSNumber else {
+            return nil
+        }
+        return result
+    }
+
+    func getString(key: String) -> String? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? String else {
+            return nil
+        }
+        return result
+    }
+
+    func getBool(key: String) -> Bool? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? Bool else {
+            return nil
+        }
+        return result
+    }
+
+    func getInt(key: String) -> Int? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? Int else {
+            return nil
+        }
+        return result
+    }
+
+    func getDouble(key: String) -> Double? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? Double else {
+            return nil
+        }
+        return result
+    }
+
+    func getDict(key: String) -> Dictionary<String, Any>? {
+        guard let result = (arguments as? Dictionary<String, Any>)?[key] as? Dictionary<String, Any> else {
+            return nil
+        }
+        return result
+    }
 }

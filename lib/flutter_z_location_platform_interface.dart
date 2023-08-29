@@ -27,7 +27,7 @@ abstract class FlutterZLocationPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<Map<dynamic, dynamic>> getCoordinate() {
+  Future<Map<dynamic, dynamic>> getCoordinate(int accuracy) {
     throw UnimplementedError('getCoordinate() has not been implemented.');
   }
 

@@ -18,31 +18,35 @@ import io.flutter.plugin.common.MethodChannel;
 public class GpsListener implements LocationListener {
 
     private MethodChannel.Result result;
-    private  final LocationManager locationManager;
+    private final LocationManager locationManager;
 
-    GpsListener(MethodChannel.Result result, LocationManager locationManager){
+    GpsListener(MethodChannel.Result result, LocationManager locationManager) {
         this.result = result;
         this.locationManager = locationManager;
     }
 
-    void  handleGps(){
-        Criteria criteria = new  Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+    void handleGps(int accuracy) {
+        Criteria criteria = new Criteria();
+        if (accuracy == 1) {
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        } else {
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        }
         criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         criteria.setCostAllowed(true);
-        locationManager.requestSingleUpdate(criteria,this, Looper.getMainLooper());
+        locationManager.requestSingleUpdate(criteria, this, Looper.getMainLooper());
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         locationManager.removeUpdates(this);
-        Map<String,String> map = new HashMap<>();
-        map.put("latitude",String.valueOf(location.getLatitude()));
-        map.put("longitude",String.valueOf(location.getLongitude()));
-        map.put("code","00000");
-        map.put("message","获取成功");
+        Map<String, String> map = new HashMap<>();
+        map.put("latitude", String.valueOf(location.getLatitude()));
+        map.put("longitude", String.valueOf(location.getLongitude()));
+        map.put("code", "00000");
+        map.put("message", "获取成功");
         result.success(map);
     }
 
@@ -64,9 +68,9 @@ public class GpsListener implements LocationListener {
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         //LocationListener.super.onProviderDisabled(provider);
-        Map<String,String> map = new HashMap<>();
-        map.put("code","A0005");
-        map.put("message","位置服务提供者被禁用");
+        Map<String, String> map = new HashMap<>();
+        map.put("code", "A0005");
+        map.put("message", "位置服务提供者被禁用");
         result.success(map);
     }
 }

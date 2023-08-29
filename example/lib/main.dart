@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
               OutlinedButton(
                 onPressed: () async {
                   Permission.location.request().then((value) async {
-                    final res = await FlutterZLocation.getCoordinate();
+                    final res = await FlutterZLocation.getCoordinate(accuracy: 1);
                     debugPrint(res.toString());
                     setState(() {
                       latitude = res.latitude;
