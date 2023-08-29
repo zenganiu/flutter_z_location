@@ -16,8 +16,8 @@ class MethodChannelFlutterZLocation extends FlutterZLocationPlatform {
   }
 
   @override
-  Future<Map<dynamic, dynamic>> getCoordinate() async {
-    final res = await methodChannel.invokeMethod<Map<dynamic, dynamic>>('getCoordinate');
+  Future<Map<dynamic, dynamic>> getCoordinate(int accuracy) async {
+    final res = await methodChannel.invokeMethod<Map<dynamic, dynamic>>('getCoordinate', {"accuracy": accuracy});
     return res ?? {};
   }
 

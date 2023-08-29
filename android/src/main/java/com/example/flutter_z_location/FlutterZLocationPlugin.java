@@ -59,7 +59,7 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
         if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("getCoordinate")) {
-            requestCurrentGps(result);
+            requestCurrentGps(call, result);
         } else if (call.method.equals("requestPermission")) {
             checkPermission(result);
         } else {
@@ -98,7 +98,12 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
     }
 
 
-    private void requestCurrentGps(@NonNull Result result) {
+    private void requestCurrentGps(@NonNull MethodCall call, @NonNull Result result) {
+
+        Integer accuracy = call.argument("accuracy");
+        if (accuracy == null) {
+            accuracy = 2;
+        }
 
         // activity为空
         if (activity == null) {
@@ -144,10 +149,10 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
             result.success(map);
             return;
         }
-        
+
         // 定位服务已开启
         GpsListener gpsListener = new GpsListener(result, locationManager);
-        gpsListener.handleGps();
+        gpsListener.handleGps(accuracy);
 
     }
 

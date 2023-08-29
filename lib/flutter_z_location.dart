@@ -26,8 +26,13 @@ class FlutterZLocation {
   }
 
   /// gps获取经纬度
-  static Future<GpsEntity> getCoordinate() async {
-    final json = await FlutterZLocationPlatform.instance.getCoordinate();
+  ///
+  /// [accuracy] 定位精度,默认为2(粗略位置):
+  /// 1-准确位置(android对应-ACCURACY_FINE, iOS对应-kCLLocationAccuracyBest)
+  /// 2-粗略位置(android对应-ACCURACY_COARSE, iOS对应-kCLLocationAccuracyKilometer)
+  ///
+  static Future<GpsEntity> getCoordinate({int accuracy = 2}) async {
+    final json = await FlutterZLocationPlatform.instance.getCoordinate(accuracy);
     final data = GpsEntity.fromMap(json);
     return data;
   }
