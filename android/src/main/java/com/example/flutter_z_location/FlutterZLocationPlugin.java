@@ -73,7 +73,7 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Map<String, String> map = new HashMap<>();
             map.put("code", "A00001");
-            map.put("message", "不支持该版本");
+            map.put("message", "不支持该版本, 需Android 6.0以上");
             result.success(map);
             return;
         }
@@ -113,7 +113,7 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
             Map<String, String> map = new HashMap<>();
             map.put("code", "A00002");
-            map.put("message", "不支持该版本");
+            map.put("message", "不支持该版本,需Android 6.0以上");
             result.success(map);
             return;
         }
@@ -130,6 +130,21 @@ public class FlutterZLocationPlugin implements FlutterPlugin, MethodCallHandler,
             result.success(map);
             return;
         }
+
+        // 权限检查
+        // 精确地理位置
+        int fineLocation = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        // 粗略地理位置信息
+        int coarseLocation = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (fineLocation != PERMISSION_GRANTED && coarseLocation != PERMISSION_GRANTED) {
+            // 定位服务被禁用
+            Map<String, String> map = new HashMap<>();
+            map.put("code", "A0004");
+            map.put("message", "定位服务被禁用");
+            result.success(map);
+            return;
+        }
+        
         // 定位服务已开启
         GpsListener gpsListener = new GpsListener(result, locationManager);
         gpsListener.handleGps();

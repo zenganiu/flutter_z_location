@@ -65,7 +65,7 @@ public class GpsListener implements LocationListener {
     public void onProviderDisabled(@NonNull String provider) {
         //LocationListener.super.onProviderDisabled(provider);
         Map<String,String> map = new HashMap<>();
-        map.put("code","A0004");
+        map.put("code","A0005");
         map.put("message","位置服务提供者被禁用");
         result.success(map);
     }
