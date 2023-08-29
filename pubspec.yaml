@@ -1,10 +1,10 @@
 name: flutter_z_location
 description: A new GPS and IP Location library.
-version: 0.0.8
+version: 0.0.9
 homepage: https://github.com/zenganiu/flutter_z_location
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=2.19.6 <4.0.0'
   flutter: ">=2.5.0"
 
 dependencies:
