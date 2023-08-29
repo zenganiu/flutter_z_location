@@ -63,6 +63,10 @@ public class GpsListener implements LocationListener {
 
     @Override
     public void onProviderDisabled(@NonNull String provider) {
-        LocationListener.super.onProviderDisabled(provider);
+        //LocationListener.super.onProviderDisabled(provider);
+        Map<String,String> map = new HashMap<>();
+        map.put("code","A0001");
+        map.put("message","定位服务不可用或未开启定位");
+        result.success(map);
     }
 }
